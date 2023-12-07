@@ -13,12 +13,16 @@ interface Author {
   avatarUrl: string
 }
 
-interface PostProps {
+export interface PostType {
+  id: number;
   author: Author;
   publishedAt: Date;
   content: string;
 }
 
+interface PostProps {
+  post: PostType;
+}
 
 // Percorre o conteúdo content e adiciona Links nas # e https
 const replaceHashtagsUrlsWithLinks = (content: string) => {
@@ -38,17 +42,17 @@ const replaceHashtagsUrlsWithLinks = (content: string) => {
   return replacedContent;
 }
 
-export function Post({ author, publishedAt, content }: PostProps) {
+export function Post({ post }: PostProps) {
   const [comments, setComments] = useState(['Comentário exemplo'])
   const [newCommentText, setNewCommentText] = useState('')
   
   const isNewCommentEmpty = newCommentText.length === 0
 
-  const publishedDateFormatted = format(publishedAt, "d 'de' LLLL 'às' H:mm'h'", {
+  const publishedDateFormatted = format(post.publishedAt, "d 'de' LLLL 'às' H:mm'h'", {
     locale: ptBR
   }) 
 
-  const publishedDateRelativeToNow = formatDistanceToNow(publishedAt, {
+  const publishedDateRelativeToNow = formatDistanceToNow(post.publishedAt, {
     locale: ptBR,
     addSuffix: true
   })
@@ -85,21 +89,21 @@ export function Post({ author, publishedAt, content }: PostProps) {
       <header>
         <div className={styles.author}>
           <Avatar
-            src={author.avatarUrl}
+            src={post.author.avatarUrl}
           />
           <div className={styles.authorInfo}>
-            <strong>{author.name}</strong> 
-            <span>{author.role}</span> 
+            <strong>{post.author.name}</strong> 
+            <span>{post.author.role}</span> 
           </div>
         </div>
 
-        <time title={publishedDateFormatted} dateTime={publishedAt.toISOString()}>
+        <time title={publishedDateFormatted} dateTime={post.publishedAt.toISOString()}>
           {publishedDateRelativeToNow}
         </time>
       </header>
 
       <div className={styles.content}>
-        <p dangerouslySetInnerHTML={{ __html: replaceHashtagsUrlsWithLinks(content)}}></p>
+        <p dangerouslySetInnerHTML={{ __html: replaceHashtagsUrlsWithLinks(post.content)}}></p>
       </div>
 
       <form onSubmit={handleCreateNewComment} className={styles.commentForm}>
