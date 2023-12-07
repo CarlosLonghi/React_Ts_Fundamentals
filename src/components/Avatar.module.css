@@ -1,0 +1,15 @@
+.avatar {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 8px;
+  box-sizing: initial; /* Faz com que o elemento ocupe seu tamanho inicial, e NÂO comprima ao adicionar border, outiline, etc. */
+
+  border: 3px solid var(--gray-800);
+  outline: 2px solid var(--green-300);
+}
+
+.avatarSmall {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 8px;
+}
